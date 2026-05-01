@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { getRedirectResult } from 'firebase/auth';
 import { auth, onAuthStateChanged } from './services/firebaseAuth';
 import { useStore } from './store/useStore';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -13,10 +12,6 @@ const App: React.FC = () => {
   const { setUser, setAuthReady } = useStore();
 
   useEffect(() => {
-    getRedirectResult(auth).then((result) => {
-      if (result?.user) setUser(result.user);
-    }).catch(() => {});
-
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setAuthReady(true);

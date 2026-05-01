@@ -3,7 +3,7 @@ import {
   auth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
   googleAuthProvider,
   signOut,
 } from '../services/firebaseAuth';
@@ -81,17 +81,18 @@ export const useAuth = () => {
     setError(null);
     setLoading(true);
     try {
-      await signInWithRedirect(auth, googleAuthProvider);
-      // Page redirects to Google — onAuthStateChanged handles the result on return
+      const credential = await signInWithPopup(auth, googleAuthProvider);
+      setUser(credential.user);
       return { ok: true as const };
     } catch (err) {
       const code = (err as { code?: string })?.code ?? '';
       const message = friendlyError(code);
       setError(message);
-      setLoading(false);
       return { ok: false as const, message };
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [setUser]);
 
   const signOutUser = useCallback(async () => {
     try {
