@@ -15,8 +15,8 @@ const LoginPage: React.FC = () => {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) navigate('/dashboard', { replace: true });
-  }, [user, navigate]);
+    if (user && !loading) navigate('/dashboard', { replace: true });
+  }, [user, loading, navigate]);
 
   const handleEmailAuth = async (email: string, password: string) => {
     setSuccess(null);
