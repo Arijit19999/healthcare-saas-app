@@ -1,5 +1,7 @@
 # Healthcare SaaS App
 
+**Live Demo:** [https://healthcare-saas-app.vercel.app/](https://healthcare-saas-app.vercel.app/)
+
 This is a sample front‑end project for a B2B healthcare SaaS platform. The
 application is built using **Vite**, **React** and **TypeScript** and uses
 [Tailwind CSS](https://tailwindcss.com/) for styling.  State management is
