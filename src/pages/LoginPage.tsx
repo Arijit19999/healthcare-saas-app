@@ -10,7 +10,7 @@ import AuthDivider from '../components/auth/AuthDivider';
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useStore();
-  const { loading, error, reset, signIn, signUp, signInWithGoogle } = useAuth();
+  const { loading, error, reset, signIn, signUp, signInWithGoogle, signUpWithGoogle } = useAuth();
   const [mode, setMode] = useState<AuthMode>('signin');
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -34,8 +34,16 @@ const LoginPage: React.FC = () => {
 
   const handleGoogle = async () => {
     setSuccess(null);
-    const result = await signInWithGoogle();
-    if (result.ok) navigate('/dashboard');
+    if (mode === 'signup') {
+      const result = await signUpWithGoogle();
+      if (result.ok) {
+        setMode('signin');
+        setSuccess('Account created with Google! Please sign in to continue.');
+      }
+    } else {
+      const result = await signInWithGoogle();
+      if (result.ok) navigate('/dashboard');
+    }
   };
 
   const handleModeChange = (next: AuthMode) => {

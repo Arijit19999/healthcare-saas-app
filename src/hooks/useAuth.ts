@@ -94,6 +94,24 @@ export const useAuth = () => {
     }
   }, [setUser]);
 
+  const signUpWithGoogle = useCallback(async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      await signInWithPopup(auth, googleAuthProvider);
+      // Conventional flow: sign user out so they explicitly log in next.
+      await signOut(auth);
+      return { ok: true as const };
+    } catch (err) {
+      const code = (err as { code?: string })?.code ?? '';
+      const message = friendlyError(code);
+      setError(message);
+      return { ok: false as const, message };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const signOutUser = useCallback(async () => {
     try {
       await signOut(auth);
@@ -109,6 +127,7 @@ export const useAuth = () => {
     signIn,
     signUp,
     signInWithGoogle,
+    signUpWithGoogle,
     signOut: signOutUser,
   };
 };
